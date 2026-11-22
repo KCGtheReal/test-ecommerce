@@ -3,12 +3,78 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 15, 23, 42;
-  --background-rgb: 248, 250, 252;
+  --background: #080b11;
+  --surface-card: #0e1420;
+  --surface-elevated: #151d2c;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-border-hover: rgba(59, 130, 246, 0.4);
+
+  --color-primary: #3b82f6;
+  --color-primary-glow: rgba(59, 130, 246, 0.25);
+  --color-success: #10b981;
+  --color-success-glow: rgba(16, 185, 129, 0.25);
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  --text-crisp: #f8fafc;
+  --text-subdued: #94a3b8;
+  --text-muted: #64748b;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  color: #f8fafc;
+  background-color: #080b11;
   min-height: 100vh;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Background dot grid pattern */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Metallic chamfered card treatment */
+.chamfer-card {
+  background: #0e1420;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+              0 10px 30px -10px rgba(0, 0, 0, 0.6);
+}
+
+.chamfer-card:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+              0 14px 40px -10px rgba(59, 130, 246, 0.15);
+}
+
+/* Tactile mechanical depression for buttons */
+.btn-tactile {
+  transition: all 120ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-tactile:active {
+  transform: translateY(1.5px);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Print Stylesheet for Slide 28 Invoice & Receipts */
+@media print {
+  header,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }

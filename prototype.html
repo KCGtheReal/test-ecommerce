@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber-Tactile Industrial Luxe | E-Commerce Prototype (2026 Edition)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            void: {
+              DEFAULT: '#080B11',
+              elevated: '#0E1420',
+              surface: '#151D2C',
+              stroke: '#1E293B',
+            },
+            cyber: {
+              blue: '#3B82F6',
+              emerald: '#10B981',
+              amber: '#F59E0B',
+              rose: '#EF4444',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+          },
+          boxShadow: {
+            'chamfer': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 10px 30px -10px rgba(0, 0, 0, 0.6)',
+            'chamfer-hover': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 14px 40px -10px rgba(59, 130, 246, 0.25)',
+            'glow-blue': '0 0 20px -3px rgba(59, 130, 246, 0.4)',
+            'glow-emerald': '0 0 20px -3px rgba(16, 185, 129, 0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Dot Matrix Grid Overlay */
+    .bg-dot-grid {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Tactile Physical Button Depression */
+    .btn-tactile {
+      transition: all 120ms cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+    }
+    .btn-tactile:active {
+      transform: translateY(1.5px);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4), inset 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080B11;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3B82F6;
+    }
+  </style>
+</head>
+<body class="bg-[#080B11] text-[#F8FAFC] min-h-screen font-sans antialiased selection:bg-blue-600 selection:text-white flex flex-col justify-between">
+
+  <!-- ========================================== -->
+  <!-- 1. AEROSPACE FLOATING NAVIGATION DECK      -->
+  <!-- ========================================== -->
+  <header class="sticky top-0 z-50 w-full bg-[#080B11]/90 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+    <!-- Telemetry Status Sub-strip -->
+    <div class="bg-[#05070B] border-b border-white/5 py-1.5 px-4 text-[11px] font-mono text-slate-400">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-slate-300 font-bold uppercase tracking-wider">
+            SYSTEM TELEMETRY // CYBER-TACTILE REBUILD 2026
+          </span>
+          <span class="hidden md:inline px-2 py-0.5 rounded text-[10px] bg-blue-500/20 text-blue-300 font-semibold border border-blue-500/30">
+            លំហាត់អនុវត្តទី១-៤ (Exercises 1, 2, 3 & 4)
+          </span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-slate-300">CURRENCY: <strong class="text-emerald-400 font-bold">USD ($)</strong></span>
+          <span class="text-white/20">|</span>
+          <span class="text-slate-300">DISPATCH: <strong class="text-blue-400 font-bold">EXPRESS DUAL-RAIL</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="#" onclick="switchView('catalog'); return false;" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-slate-900 flex items-center justify-center text-white border border-white/20 shadow-glow-blue group-hover:scale-105 transition-transform">
+          <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <span class="font-black text-lg text-white tracking-wider flex items-center gap-1 font-mono">
+            WEBYANSH<span class="text-blue-500">.CORE</span>
+          </span>
+          <span class="text-[10px] text-slate-400 font-mono tracking-widest block uppercase">
+            Computer Hardware Store
+          </span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Tabs -->
+      <nav class="hidden md:flex items-center gap-2">
+        <button onclick="switchView('catalog')" id="nav-catalog" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold tracking-wide transition-all bg-[#151D2C] text-blue-400 border border-blue-500/30 shadow-inner">
+          <i data-lucide="package" class="w-3.5 h-3.5"></i>
+          <span>1. Products (Slide 26)</span>
+        </button>
+        <button onclick="switchView('cart')" id="nav-cart" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold tracking-wide transition-all text-slate-400 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+          <span>2. Cart Matrix</span>
+        </button>
+        <button onclick="switchView('checkout')" id="nav-checkout" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold tracking-wide transition-all text-slate-400 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+          <span>3. Checkout Terminal</span>
+        </button>
+        <button onclick="switchView('erd')" id="nav-erd" class="nav-tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold tracking-wide transition-all text-slate-400 hover:text-white hover:bg-white/5 border border-transparent">
+          <i data-lucide="database" class="w-3.5 h-3.5"></i>
+          <span>4. Relational ERD</span>
+        </button>
+      </nav>
+
+      <!-- Right Cart Deck Pill -->
+      <div class="flex items-center gap-3">
+        <button onclick="switchView('cart')" class="btn-tactile flex items-center gap-3 px-4 py-2 rounded-xl bg-[#151D2C] hover:bg-[#1E293B] border border-white/10 hover:border-blue-500/40 text-white transition-all shadow-md">
+          <div class="relative">
+            <i data-lucide="shopping-bag" class="w-4 h-4 text-blue-400"></i>
+            <span id="nav-cart-badge" class="absolute -top-2.5 -right-2.5 bg-blue-600 text-white font-mono text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-glow-blue">
+              2
+            </span>
+          </div>
+          <span class="hidden sm:inline text-xs font-mono text-slate-400">DECK:</span>
+          <span id="nav-cart-total" class="text-xs font-mono font-bold text-emerald-400">
+            $675.00
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- MAIN CONTAINER (DYNAMIC VIEWS)             -->
+  <!-- ========================================== -->
+  <main class="flex-1 bg-dot-grid">
+
+    <!-- VIEW 1: HARDWARE CATALOG (EXERCISE 1 / SLIDE 26) -->
+    <section id="view-catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+      <!-- Hero Headline Banner -->
+      <div class="relative rounded-3xl bg-[#0E1420] border border-white/10 p-8 sm:p-12 overflow-hidden shadow-chamfer">
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-mono font-bold uppercase tracking-wider">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>លំហាត់អនុវត្តទី១៖ ៤ មុខទំនិញ (4 Official Products)</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+            Cyber-Tactile Industrial Hardware. <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-300">
+              Engineered with Precision.
+            </span>
+          </h1>
+          <p class="text-sm sm:text-base text-slate-400 leading-relaxed font-sans">
+            The four official hardware components from <strong>លំហាត់អនុវត្ត.pdf</strong>:
+            <strong class="text-white">Laptop ($650.00)</strong>, <strong class="text-white">Mouse ($15.00)</strong>,
+            <strong class="text-white">Keyboard ($25.00)</strong>, and <strong class="text-white">Monitor ($120.00)</strong>.
+            Experience mechanical tactile button feedback, real-time stock pulse radar, and instant cart synchronization.
+          </p>
+
+          <div class="pt-4 flex flex-wrap gap-3">
+            <button onclick="switchView('cart')" class="btn-tactile px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-mono text-xs font-bold shadow-glow-blue flex items-center gap-2">
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+              <span>Open Cart Deck (<span id="hero-cart-count">2</span> items)</span>
+            </button>
+            <button onclick="switchView('erd')" class="btn-tactile px-5 py-3 rounded-xl bg-[#151D2C] hover:bg-[#1E293B] border border-white/10 text-slate-300 font-mono text-xs font-bold flex items-center gap-2">
+              <i data-lucide="database" class="w-4 h-4 text-blue-400"></i>
+              <span>Exercise 4: 5-Table ERD</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Product Grid (4 Items) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- CARD 1: LAPTOP ($650.00) -->
+        <div class="group relative bg-[#0E1420] rounded-3xl border border-white/10 hover:border-blue-500/50 shadow-chamfer hover:shadow-chamfer-hover transition-all duration-300 flex flex-col overflow-hidden">
+          <div class="relative aspect-4/3 w-full bg-[#080B11] overflow-hidden border-b border-white/5">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&auto=format&fit=crop&q=80" alt="Laptop Workstation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+            <div class="absolute top-3 left-3 z-10">
+              <span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider bg-[#080B11]/90 text-blue-400 border border-blue-500/30 backdrop-blur-md">
+                COMPUTERS
+              </span>
+            </div>
+            <div class="absolute top-3 right-3 z-10">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#080B11]/90 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>50 UNITS</span>
+              </span>
+            </div>
+            <div class="absolute inset-0 bg-[#080B11]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-xs">
+              <button onclick="openQuickView(1)" class="btn-tactile px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold border border-white/30 backdrop-blur-md">
+                [ TELEMETRY ]
+              </button>
+            </div>
+          </div>
+          <div class="p-5 flex flex-col flex-1 justify-between gap-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 text-amber-400 text-xs font-mono font-bold">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <span>4.9</span>
+                  <span class="text-slate-500">(142)</span>
+                </div>
+                <span class="text-[10px] font-mono text-slate-500">EX-1 OFFICIAL</span>
+              </div>
+              <h3 class="font-black text-lg text-white tracking-tight group-hover:text-blue-400 transition-colors">
+                High Performance Laptop
+              </h3>
+              <div class="bg-[#080B11] p-2 rounded-xl border border-white/5 font-mono text-[11px] text-slate-300">
+                <code>16GB RAM // 512GB SSD // IPS</code>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div>
+                <span class="text-[10px] font-mono text-slate-500 uppercase block tracking-wider">UNIT PRICE</span>
+                <span class="text-2xl font-black font-mono text-white tracking-tight">$650.00</span>
+              </div>
+              <button onclick="addToCart(1, this)" class="btn-tactile px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md bg-blue-600 hover:bg-blue-500 text-white shadow-glow-blue">
+                [ + ADD ]
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: MOUSE ($15.00) -->
+        <div class="group relative bg-[#0E1420] rounded-3xl border border-white/10 hover:border-blue-500/50 shadow-chamfer hover:shadow-chamfer-hover transition-all duration-300 flex flex-col overflow-hidden">
+          <div class="relative aspect-4/3 w-full bg-[#080B11] overflow-hidden border-b border-white/5">
+            <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80" alt="Precision Mouse" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+            <div class="absolute top-3 left-3 z-10">
+              <span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider bg-[#080B11]/90 text-blue-400 border border-blue-500/30 backdrop-blur-md">
+                ACCESSORIES
+              </span>
+            </div>
+            <div class="absolute top-3 right-3 z-10">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#080B11]/90 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>100 UNITS</span>
+              </span>
+            </div>
+            <div class="absolute inset-0 bg-[#080B11]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-xs">
+              <button onclick="openQuickView(2)" class="btn-tactile px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold border border-white/30 backdrop-blur-md">
+                [ TELEMETRY ]
+              </button>
+            </div>
+          </div>
+          <div class="p-5 flex flex-col flex-1 justify-between gap-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 text-amber-400 text-xs font-mono font-bold">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <span>4.8</span>
+                  <span class="text-slate-500">(89)</span>
+                </div>
+                <span class="text-[10px] font-mono text-slate-500">EX-1 OFFICIAL</span>
+              </div>
+              <h3 class="font-black text-lg text-white tracking-tight group-hover:text-blue-400 transition-colors">
+                Wireless Optical Mouse
+              </h3>
+              <div class="bg-[#080B11] p-2 rounded-xl border border-white/5 font-mono text-[11px] text-slate-300">
+                <code>16,000 DPI // 2.4GHz // Silent</code>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div>
+                <span class="text-[10px] font-mono text-slate-500 uppercase block tracking-wider">UNIT PRICE</span>
+                <span class="text-2xl font-black font-mono text-white tracking-tight">$15.00</span>
+              </div>
+              <button onclick="addToCart(2, this)" class="btn-tactile px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md bg-blue-600 hover:bg-blue-500 text-white shadow-glow-blue">
+                [ + ADD ]
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: KEYBOARD ($25.00) -->
+        <div class="group relative bg-[#0E1420] rounded-3xl border border-white/10 hover:border-blue-500/50 shadow-chamfer hover:shadow-chamfer-hover transition-all duration-300 flex flex-col overflow-hidden">
+          <div class="relative aspect-4/3 w-full bg-[#080B11] overflow-hidden border-b border-white/5">
+            <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80" alt="Mechanical Keyboard" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+            <div class="absolute top-3 left-3 z-10">
+              <span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider bg-[#080B11]/90 text-blue-400 border border-blue-500/30 backdrop-blur-md">
+                ACCESSORIES
+              </span>
+            </div>
+            <div class="absolute top-3 right-3 z-10">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#080B11]/90 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>80 UNITS</span>
+              </span>
+            </div>
+            <div class="absolute inset-0 bg-[#080B11]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-xs">
+              <button onclick="openQuickView(3)" class="btn-tactile px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold border border-white/30 backdrop-blur-md">
+                [ TELEMETRY ]
+              </button>
+            </div>
+          </div>
+          <div class="p-5 flex flex-col flex-1 justify-between gap-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 text-amber-400 text-xs font-mono font-bold">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <span>4.9</span>
+                  <span class="text-slate-500">(210)</span>
+                </div>
+                <span class="text-[10px] font-mono text-slate-500">EX-1 OFFICIAL</span>
+              </div>
+              <h3 class="font-black text-lg text-white tracking-tight group-hover:text-blue-400 transition-colors">
+                Tactile Mechanical Keyboard
+              </h3>
+              <div class="bg-[#080B11] p-2 rounded-xl border border-white/5 font-mono text-[11px] text-slate-300">
+                <code>Blue Tactile // Hot-Swap // RGB</code>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div>
+                <span class="text-[10px] font-mono text-slate-500 uppercase block tracking-wider">UNIT PRICE</span>
+                <span class="text-2xl font-black font-mono text-white tracking-tight">$25.00</span>
+              </div>
+              <button onclick="addToCart(3, this)" class="btn-tactile px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md bg-blue-600 hover:bg-blue-500 text-white shadow-glow-blue">
+                [ + ADD ]
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: MONITOR ($120.00) -->
+        <div class="group relative bg-[#0E1420] rounded-3xl border border-white/10 hover:border-blue-500/50 shadow-chamfer hover:shadow-chamfer-hover transition-all duration-300 flex flex-col overflow-hidden">
+          <div class="relative aspect-4/3 w-full bg-[#080B11] overflow-hidden border-b border-white/5">
+            <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80" alt="UltraHD Monitor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100">
+            <div class="absolute top-3 left-3 z-10">
+              <span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider bg-[#080B11]/90 text-blue-400 border border-blue-500/30 backdrop-blur-md">
+                DISPLAYS
+              </span>
+            </div>
+            <div class="absolute top-3 right-3 z-10">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#080B11]/90 text-emerald-400 border border-emerald-500/30 backdrop-blur-md">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span>35 UNITS</span>
+              </span>
+            </div>
+            <div class="absolute inset-0 bg-[#080B11]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-xs">
+              <button onclick="openQuickView(4)" class="btn-tactile px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs font-bold border border-white/30 backdrop-blur-md">
+                [ TELEMETRY ]
+              </button>
+            </div>
+          </div>
+          <div class="p-5 flex flex-col flex-1 justify-between gap-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 text-amber-400 text-xs font-mono font-bold">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                  <span>4.9</span>
+                  <span class="text-slate-500">(95)</span>
+                </div>
+                <span class="text-[10px] font-mono text-slate-500">EX-1 OFFICIAL</span>
+              </div>
+              <h3 class="font-black text-lg text-white tracking-tight group-hover:text-blue-400 transition-colors">
+                27-inch 4K UHD Monitor
+              </h3>
+              <div class="bg-[#080B11] p-2 rounded-xl border border-white/5 font-mono text-[11px] text-slate-300">
+                <code>3840x2160 // 144Hz 1ms // HDR</code>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+              <div>
+                <span class="text-[10px] font-mono text-slate-500 uppercase block tracking-wider">UNIT PRICE</span>
+                <span class="text-2xl font-black font-mono text-white tracking-tight">$120.00</span>
+              </div>
+              <button onclick="addToCart(4, this)" class="btn-tactile px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all shadow-md bg-blue-600 hover:bg-blue-500 text-white shadow-glow-blue">
+                [ + ADD ]
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 2: INDUSTRIAL CART MATRIX (/cart - EXERCISE 1) -->
+    <section id="view-cart" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      <!-- Title & Breadcrumb -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+        <div>
+          <div class="flex items-center gap-2 text-xs font-mono text-slate-400 mb-1">
+            <a href="#" onclick="switchView('catalog'); return false;" class="hover:text-blue-400 transition-colors">01. CATALOG</a>
+            <span>/</span>
+            <span class="text-blue-400 font-bold">02. SHOPPING CART MATRIX</span>
+          </div>
+          <h1 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+            <span>Hardware Dispatch Cart</span>
+            <span id="cart-item-count-badge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+              2 ITEMS LOADED
+            </span>
+          </h1>
+        </div>
+        <button onclick="clearCart()" class="text-xs font-mono text-rose-400 hover:text-rose-300 transition-colors">
+          [ PURGE CART ]
+        </button>
+      </div>
+
+      <!-- Free Shipping Threshold Progress Meter -->
+      <div class="bg-[#0E1420] rounded-2xl border border-white/10 p-5 shadow-chamfer space-y-2">
+        <div class="flex items-center justify-between text-xs font-mono">
+          <div class="flex items-center gap-2 text-slate-300">
+            <i data-lucide="truck" class="w-4 h-4 text-blue-400"></i>
+            <span id="free-shipping-text" class="text-emerald-400 font-bold">
+              🎉 [ ✓ FREE STANDARD DISPATCH UNLOCKED ON ORDERS &gt; $50 ]
+            </span>
+          </div>
+          <span id="free-shipping-percent" class="font-black text-blue-400 font-mono">100%</span>
+        </div>
+        <div class="w-full bg-[#080B11] h-2.5 rounded-full overflow-hidden border border-white/5">
+          <div id="free-shipping-bar" class="h-full bg-gradient-to-r from-blue-600 to-emerald-400 transition-all duration-500 rounded-full" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Cart Grid (Table + Sticky Summary) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Cart Table (Col 8) -->
+        <div class="lg:col-span-8 bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer overflow-hidden">
+          <div class="p-4 sm:p-5 border-b border-white/10 hidden sm:grid grid-cols-12 text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider">
+            <span class="col-span-6">Component Specification</span>
+            <span class="col-span-2 text-center">Unit Price</span>
+            <span class="col-span-2 text-center">Quantity</span>
+            <span class="col-span-2 text-right">Line Total</span>
+          </div>
+
+          <div id="cart-items-container" class="divide-y divide-white/5">
+            <!-- Dynamically populated via JS -->
+          </div>
+
+          <div class="p-4 sm:p-5 bg-[#080B11] border-t border-white/10 flex items-center justify-between">
+            <button onclick="switchView('catalog')" class="btn-tactile px-4 py-2 rounded-xl bg-[#151D2C] hover:bg-[#1E293B] text-slate-300 font-mono text-xs font-bold flex items-center gap-2">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              <span>Back to Hardware Catalog</span>
+            </button>
+            <span class="text-xs font-mono text-slate-500">Exercise 1 Shopping Cart Spec</span>
+          </div>
+        </div>
+
+        <!-- Sticky Order Summary Manifest (Col 4) -->
+        <div class="lg:col-span-4 bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer p-6 space-y-6 sticky top-24">
+          <div class="pb-3 border-b border-white/10 flex items-center justify-between">
+            <h2 class="text-base font-black text-white font-mono uppercase tracking-wide">
+              Dispatch Manifest
+            </h2>
+            <span class="text-xs font-mono text-blue-400 font-bold">ACTIVE</span>
+          </div>
+
+          <!-- Promo Code Bar -->
+          <div class="space-y-2">
+            <label class="block text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+              PROMO CODE / COUPON
+            </label>
+            <div class="flex items-center gap-2">
+              <input type="text" id="promo-input" placeholder="ENTER 'TECH10'" class="w-full px-3 py-2 rounded-xl bg-[#080B11] border border-white/10 text-xs font-mono text-white placeholder-slate-600 uppercase focus:border-blue-500 focus:outline-none">
+              <button onclick="applyPromo()" class="btn-tactile px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-mono font-bold">
+                APPLY
+              </button>
+            </div>
+            <div id="promo-status" class="text-[11px] font-mono text-emerald-400 hidden">
+              [ ✓ PROMO 'TECH10' APPLIED: -10% OFF ]
+            </div>
+          </div>
+
+          <!-- Price Telemetry Breakdown -->
+          <div class="space-y-3 text-xs font-mono border-t border-white/10 pt-4">
+            <div class="flex items-center justify-between text-slate-400">
+              <span>ITEMS SUBTOTAL:</span>
+              <span id="summary-subtotal" class="font-bold text-white">$675.00</span>
+            </div>
+            <div id="summary-discount-row" class="hidden flex items-center justify-between text-emerald-400 font-bold">
+              <span>PROMO DISCOUNT (10%):</span>
+              <span id="summary-discount">-$67.50</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-400">
+              <span>ESTIMATED DELIVERY:</span>
+              <span class="text-emerald-400 font-bold">FREE ($0.00)</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-400">
+              <span>TAXES:</span>
+              <span class="font-bold text-slate-300">$0.00</span>
+            </div>
+
+            <div class="pt-4 border-t border-white/10 flex items-baseline justify-between text-sm">
+              <span class="font-black text-white text-base">ESTIMATED TOTAL:</span>
+              <div class="text-right">
+                <span id="summary-grandtotal" class="text-2xl font-black text-white tracking-tight">
+                  $675.00
+                </span>
+                <span class="block text-[10px] text-slate-500">+ Optional Express on next step</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Proceed to Checkout CTA -->
+          <button onclick="switchView('checkout')" class="btn-tactile w-full py-4 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-mono font-black text-sm shadow-glow-blue flex items-center justify-center gap-2 tracking-wide">
+            <span>PROCEED TO CHECKOUT</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+
+          <div class="flex items-center justify-center gap-2 text-xs font-mono text-slate-500 pt-1">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+            <span>EXERCISE 2 CHECKOUT READY</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: TERMINAL CHECKOUT (/checkout - EXERCISE 2) -->
+    <section id="view-checkout" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      <!-- Breadcrumb Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+        <div>
+          <div class="flex items-center gap-2 text-xs font-mono text-slate-400 mb-1">
+            <a href="#" onclick="switchView('cart'); return false;" class="hover:text-blue-400 transition-colors">01. CART</a>
+            <span>/</span>
+            <span class="text-blue-400 font-bold">02. DISPATCH DESTINATION (EXERCISE 2)</span>
+            <span>/</span>
+            <span class="text-slate-600">03. SLIDE 28 RECEIPT</span>
+          </div>
+          <h1 class="text-3xl font-black text-white tracking-tight">
+            Checkout Terminal & Address
+          </h1>
+        </div>
+
+        <!-- 1-Click Auto-Fill Demo Button -->
+        <button onclick="autoFillDemoStudent()" class="btn-tactile px-4 py-2.5 rounded-xl bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/40 text-xs font-mono font-bold flex items-center gap-2 shadow-sm">
+          <i data-lucide="sparkles" class="w-4 h-4 text-blue-400"></i>
+          <span>✨ Auto-Fill Demo Student Data</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Form Fields & Shipping Radio Cards (Col 7) -->
+        <div class="lg:col-span-7 space-y-6">
+          <!-- Customer Address Card -->
+          <div class="bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer p-6 sm:p-7 space-y-5">
+            <h2 class="text-sm font-mono font-bold text-white uppercase tracking-wider flex items-center gap-2.5 pb-3 border-b border-white/10">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-black">
+                1
+              </span>
+              <span>Customer Details & Shipping Address (Exercise 2)</span>
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
+              <!-- First Name -->
+              <div>
+                <label class="block text-slate-300 font-bold mb-1">First Name *</label>
+                <input type="text" id="chk-firstName" placeholder="Sokha" class="w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+              </div>
+
+              <!-- Last Name -->
+              <div>
+                <label class="block text-slate-300 font-bold mb-1">Last Name *</label>
+                <input type="text" id="chk-lastName" placeholder="Chan" class="w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="block text-slate-300 font-bold mb-1">Email Address *</label>
+                <input type="email" id="chk-email" placeholder="sokha.chan@example.com" class="w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+              </div>
+
+              <!-- Phone -->
+              <div>
+                <label class="block text-slate-300 font-bold mb-1">Phone Number *</label>
+                <input type="tel" id="chk-phone" placeholder="+855 12 345 678" class="w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+              </div>
+
+              <!-- Street Address -->
+              <div class="sm:col-span-2">
+                <label class="block text-slate-300 font-bold mb-1">Street Address *</label>
+                <input type="text" id="chk-address" placeholder="#123, St. 2004, Sangkat Teuk Thla" class="w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+              </div>
+
+              <!-- City -->
+              <div>
+                <label class="block text-slate-300 font-bold mb-1">City *</label>
+                <input type="text" id="chk-city" placeholder="Phnom Penh" class="w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+              </div>
+
+              <!-- State & Zip -->
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-slate-300 font-bold mb-1">State / Prov *</label>
+                  <input type="text" id="chk-state" placeholder="Phnom Penh" class="w-full px-3 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-slate-300 font-bold mb-1">Zip Code *</label>
+                  <input type="text" id="chk-zipCode" placeholder="12000" class="w-full px-3 py-2.5 rounded-xl bg-[#080B11] border border-white/10 text-white focus:border-blue-500 focus:outline-none">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Shipping Radio Selection -->
+          <div class="bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer p-6 sm:p-7 space-y-4 font-mono">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2.5 pb-3 border-b border-white/10">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-black">
+                2
+              </span>
+              <span>Shipping Method (Practical Exercise 2)</span>
+            </h2>
+
+            <div class="space-y-3">
+              <!-- Free Shipping Radio -->
+              <label id="shipping-label-free" onclick="selectShipping('free')" class="flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all bg-[#151D2C] border-blue-500 shadow-glow-blue">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="shipping" id="radio-free" value="free" checked class="text-blue-600">
+                  <div>
+                    <span class="font-bold text-sm text-white block">Free Shipping ($0.00)</span>
+                    <span class="text-xs text-slate-400">Standard delivery (7 - 20 Business Days)</span>
+                  </div>
+                </div>
+                <span class="font-black text-emerald-400 text-sm">FREE</span>
+              </label>
+
+              <!-- Express Shipping Radio -->
+              <label id="shipping-label-express" onclick="selectShipping('express')" class="flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all bg-[#080B11] border-white/10 hover:border-white/20">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="shipping" id="radio-express" value="express" class="text-blue-600">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-sm text-white">Express Shipping ($9.00)</span>
+                      <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] font-black">
+                        FASTEST
+                      </span>
+                    </div>
+                    <span class="text-xs text-slate-400">Priority express courier (1 - 3 Business Days)</span>
+                  </div>
+                </div>
+                <span class="font-black text-white text-sm">$9.00</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Checkout Summary & Submit (Col 5) -->
+        <div class="lg:col-span-5 bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer p-6 sm:p-7 space-y-6 sticky top-24 font-mono">
+          <div class="pb-3 border-b border-white/10 flex items-center justify-between">
+            <h2 class="text-base font-black text-white uppercase">Order Review</h2>
+            <span class="text-xs font-bold text-blue-400">2 ITEMS</span>
+          </div>
+
+          <!-- Items Mini List -->
+          <div class="divide-y divide-white/5 space-y-2 text-xs">
+            <div class="flex items-center justify-between py-2">
+              <div>
+                <span class="text-white font-bold block">High Performance Laptop</span>
+                <span class="text-slate-500 text-[11px]">QTY: 1 × $650.00</span>
+              </div>
+              <span class="text-white font-bold">$650.00</span>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <div>
+                <span class="text-white font-bold block">Tactile Mechanical Keyboard</span>
+                <span class="text-slate-500 text-[11px]">QTY: 1 × $25.00</span>
+              </div>
+              <span class="text-white font-bold">$25.00</span>
+            </div>
+          </div>
+
+          <!-- Price Calculation -->
+          <div class="pt-4 border-t border-white/10 space-y-2 text-xs">
+            <div class="flex justify-between text-slate-400">
+              <span>ITEMS SUBTOTAL:</span>
+              <span class="text-white font-bold">$675.00</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>SHIPPING METHOD:</span>
+              <span id="chk-shipping-cost-label" class="text-emerald-400 font-bold">FREE ($0.00)</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>ESTIMATED TAX:</span>
+              <span class="text-white font-bold">$0.00</span>
+            </div>
+            <div class="pt-3 border-t border-white/10 flex justify-between items-baseline">
+              <span class="text-base font-black text-white">GRAND TOTAL:</span>
+              <span id="chk-grand-total" class="text-2xl font-black text-white">$675.00</span>
+            </div>
+          </div>
+
+          <!-- Place Order Button -->
+          <button onclick="submitOrder()" class="btn-tactile w-full py-4 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-black text-sm shadow-glow-blue flex items-center justify-center gap-2 tracking-wide">
+            <span>PLACE ORDER NOW</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+
+          <div class="flex items-center justify-center gap-2 text-xs text-slate-500">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+            <span>Fulfilled by Practical Exercise 2 Flow</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: SLIDE 28 ORDER CONFIRMATION (/order-confirmation/ORD-0001) -->
+    <section id="view-confirmation" class="hidden max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-mono">
+      <!-- Slide 28 Header Banner -->
+      <div class="text-center space-y-3 pb-6 border-b border-white/10">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mb-2 shadow-glow-emerald">
+          <i data-lucide="check-circle-2" class="w-10 h-10 stroke-[2.5]"></i>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-black uppercase tracking-wider mb-2 border border-blue-500/30">
+          <span>SLIDE 28: PRACTICAL EXERCISE 3 CONFIRMATION</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight font-sans">
+          Order Placed Successfully!
+        </h1>
+        <p class="text-slate-400 text-xs sm:text-sm max-w-md mx-auto font-sans leading-relaxed">
+          Thank you for your purchase. We have received your order and our hardware dispatch team is processing it.
+        </p>
+      </div>
+
+      <!-- Status Stepper (Slide 28 requirement: "Status: Pending") -->
+      <div class="bg-[#0E1420] rounded-2xl border border-white/10 p-5 shadow-chamfer">
+        <div class="flex items-center justify-between max-w-2xl mx-auto text-xs">
+          <div class="flex flex-col items-center gap-1.5 text-blue-400">
+            <span class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-black shadow-glow-blue">
+              1
+            </span>
+            <span class="font-bold">ORDER RECORDED</span>
+            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              PENDING
+            </span>
+          </div>
+          <div class="h-0.5 flex-1 bg-white/10 mx-3 -mt-6"></div>
+          <div class="flex flex-col items-center gap-1.5 text-slate-600">
+            <span class="w-8 h-8 rounded-full bg-[#151D2C] text-slate-500 flex items-center justify-center font-black">
+              2
+            </span>
+            <span>PROCESSING</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-white/10 mx-3 -mt-6"></div>
+          <div class="flex flex-col items-center gap-1.5 text-slate-600">
+            <span class="w-8 h-8 rounded-full bg-[#151D2C] text-slate-500 flex items-center justify-center font-black">
+              3
+            </span>
+            <span>DISPATCHED</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-white/10 mx-3 -mt-6"></div>
+          <div class="flex flex-col items-center gap-1.5 text-slate-600">
+            <span class="w-8 h-8 rounded-full bg-[#151D2C] text-slate-500 flex items-center justify-center font-black">
+              4
+            </span>
+            <span>DELIVERED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 28 Required Fields Matrix (4 Cards) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- 1. Order ID -->
+        <div class="bg-[#0E1420] p-5 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">• Order ID</span>
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-black text-white font-mono" id="conf-order-id">ORD-0001</span>
+            <button onclick="copyOrderId()" class="text-slate-400 hover:text-white p-1" title="Copy Order ID">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Customer Name -->
+        <div class="bg-[#0E1420] p-5 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">• Customer Name</span>
+          <span class="text-base font-black text-white truncate block" id="conf-customer-name">Sokha Chan</span>
+          <span class="text-[11px] text-slate-400 truncate block">sokha.chan@example.com</span>
+        </div>
+
+        <!-- 3. Order Date -->
+        <div class="bg-[#0E1420] p-5 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">• Order Date</span>
+          <span class="text-xs font-black text-white block" id="conf-order-date">November 22, 2026</span>
+          <span class="text-[10px] text-slate-400 block">3:24 PM UTC+7</span>
+        </div>
+
+        <!-- 4. Order Status: Pending -->
+        <div class="bg-[#0E1420] p-5 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">• Order Status</span>
+          <div>
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+              <span>Pending</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ordered Products Table (Slide 28 requirement) -->
+      <div class="bg-[#0E1420] rounded-2xl border border-white/10 shadow-chamfer overflow-hidden">
+        <div class="p-5 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="package" class="w-4 h-4 text-blue-400"></i>
+            <h2 class="font-black text-white text-base font-sans">• Ordered Products (2 items)</h2>
+          </div>
+          <span class="text-xs text-slate-400">Historical Price Snapshot</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#080B11] text-slate-400 uppercase font-bold tracking-wider text-[11px] border-b border-white/10">
+              <tr>
+                <th class="py-3 px-5">Product Name</th>
+                <th class="py-3 px-5 text-right">Unit Price</th>
+                <th class="py-3 px-5 text-center">QTY</th>
+                <th class="py-3 px-5 text-right">Total Amount</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 text-slate-300">
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="py-3.5 px-5">
+                  <div class="flex items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=100&auto=format&fit=crop&q=80" class="w-9 h-9 rounded-lg object-cover bg-slate-900 border border-white/10" alt="Laptop">
+                    <div>
+                      <span class="font-bold text-white block">Laptop</span>
+                      <span class="text-[11px] text-slate-500">16GB RAM // 512GB SSD</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3.5 px-5 text-right text-slate-400">$650.00</td>
+                <td class="py-3.5 px-5 text-center font-bold text-white">1</td>
+                <td class="py-3.5 px-5 text-right font-black text-white">$650.00</td>
+              </tr>
+              <tr class="hover:bg-white/5 transition-colors">
+                <td class="py-3.5 px-5">
+                  <div class="flex items-center gap-3">
+                    <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=100&auto=format&fit=crop&q=80" class="w-9 h-9 rounded-lg object-cover bg-slate-900 border border-white/10" alt="Keyboard">
+                    <div>
+                      <span class="font-bold text-white block">Keyboard</span>
+                      <span class="text-[11px] text-slate-500">Mechanical RGB Switches</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3.5 px-5 text-right text-slate-400">$25.00</td>
+                <td class="py-3.5 px-5 text-center font-bold text-white">1</td>
+                <td class="py-3.5 px-5 text-right font-black text-white">$25.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Invoice Breakdown Footer -->
+        <div class="bg-[#080B11] p-5 border-t border-white/10 space-y-2 text-xs">
+          <div class="flex justify-between text-slate-400">
+            <span>Subtotal</span>
+            <span class="font-semibold text-white">$675.00</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Shipping</span>
+            <span class="font-semibold text-emerald-400">FREE ($0.00)</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Estimated Taxes</span>
+            <span class="font-semibold text-white">$0.00</span>
+          </div>
+          <div class="pt-3 border-t border-white/10 flex justify-between items-baseline font-sans">
+            <span class="text-sm font-black text-white">• Total Amount</span>
+            <span class="text-2xl font-black text-white font-mono" id="conf-total-amount">$675.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-4">
+        <button onclick="switchView('catalog')" class="btn-tactile px-5 py-2.5 rounded-xl border border-white/20 text-slate-300 hover:text-white hover:bg-white/5 text-xs font-bold transition-colors flex items-center gap-2">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Continue Shopping</span>
+        </button>
+        <div class="flex items-center gap-3">
+          <button onclick="window.print()" class="btn-tactile px-5 py-2.5 rounded-xl border border-white/20 text-slate-300 hover:text-white hover:bg-white/5 text-xs font-bold transition-colors flex items-center gap-2">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>Print Invoice</span>
+          </button>
+          <button onclick="switchView('erd')" class="btn-tactile px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-colors shadow-glow-blue flex items-center gap-2">
+            <i data-lucide="database" class="w-4 h-4"></i>
+            <span>Inspect Database ERD</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: RELATIONAL ERD COCKPIT (/erd - EXERCISE 4) -->
+    <section id="view-erd" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-mono">
+      <!-- Title & Header -->
+      <div class="pb-6 border-b border-white/10">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-black uppercase tracking-wider flex items-center gap-1.5 border border-blue-500/30">
+            <i data-lucide="database" class="w-3.5 h-3.5 text-blue-400"></i>
+            <span>លំហាត់អនុវត្តទី៤៖ ERD & DATABASE DESIGN (EXERCISE 4)</span>
+          </span>
+          <span class="text-xs text-slate-400">
+            Third Normal Form (3NF) • SQLite & Prisma
+          </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight font-sans">
+          Relational Database Architecture & ERD
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-3xl leading-relaxed font-sans">
+          Visual architecture of the 5 relational tables implementing Practical Exercise 4:
+          <strong>customers</strong>, <strong>categories</strong>, <strong>products</strong>,
+          <strong>orders</strong>, and <strong>order_items</strong>.
+        </p>
+      </div>
+
+      <!-- Live Database Telemetry Badges (5 Tables) -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <div class="bg-[#0E1420] p-4 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">CUSTOMERS</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-white">1</span>
+            <span class="text-[10px] font-bold text-blue-400 bg-blue-500/20 px-2 py-0.5 rounded">1:N ORDERS</span>
+          </div>
+          <span class="text-[10px] text-slate-500">Auto-deduplicated</span>
+        </div>
+
+        <div class="bg-[#0E1420] p-4 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">CATEGORIES</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-white">3</span>
+            <span class="text-[10px] font-bold text-blue-400 bg-blue-500/20 px-2 py-0.5 rounded">1:N PRODUCTS</span>
+          </div>
+          <span class="text-[10px] text-slate-500">Computers / Accessories</span>
+        </div>
+
+        <div class="bg-[#0E1420] p-4 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">PRODUCTS</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-white">4</span>
+            <span class="text-[10px] font-bold text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded">EX-1 SEEDED</span>
+          </div>
+          <span class="text-[10px] text-slate-500">Laptop, Mouse, Keyboard...</span>
+        </div>
+
+        <div class="bg-[#0E1420] p-4 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">ORDERS</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-white">1</span>
+            <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded">ORD-0001</span>
+          </div>
+          <span class="text-[10px] text-slate-500">Slide 28 Pending Status</span>
+        </div>
+
+        <div class="bg-[#0E1420] p-4 rounded-2xl border border-white/10 shadow-chamfer space-y-1">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">ORDER_ITEMS</span>
+          <div class="flex items-baseline justify-between">
+            <span class="text-2xl font-black text-white">2</span>
+            <span class="text-[10px] font-bold text-purple-400 bg-purple-500/20 px-2 py-0.5 rounded">SNAPSHOTS</span>
+          </div>
+          <span class="text-[10px] text-slate-500">Historical Price Safety</span>
+        </div>
+      </div>
+
+      <!-- Visual ERD Cards with Connectors -->
+      <div class="bg-[#0E1420] rounded-3xl p-6 sm:p-8 space-y-6 shadow-chamfer border border-white/10">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="share-2" class="w-4 h-4 text-blue-400"></i>
+            <span>3NF Entity Relationship Diagram (ERD)</span>
+          </h2>
+          <span class="text-xs text-slate-400">Foreign Key Cascades Enabled</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Card 1: CUSTOMERS -->
+          <div class="bg-[#080B11] border border-white/10 rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+              <span class="font-bold text-blue-400">CUSTOMERS</span>
+              <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">PK: id</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-1.5">
+              <li class="text-amber-400 font-bold">🔑 id (INTEGER PK)</li>
+              <li>firstName (TEXT)</li>
+              <li>lastName (TEXT)</li>
+              <li class="text-indigo-300 font-semibold">email (TEXT UNIQUE)</li>
+              <li>phone (TEXT)</li>
+              <li>address, city, state, zipCode</li>
+            </ul>
+            <div class="pt-2 border-t border-white/10 text-[11px] text-slate-400 flex justify-between">
+              <span>Places Orders</span>
+              <span class="font-bold text-blue-400">1 : N (One-to-Many)</span>
+            </div>
+          </div>
+
+          <!-- Card 2: ORDERS -->
+          <div class="bg-[#080B11] border-2 border-blue-500/60 rounded-2xl p-5 space-y-3 shadow-glow-blue">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+              <span class="font-bold text-blue-300">ORDERS</span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">ORD-0001</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-1.5">
+              <li class="text-amber-400 font-bold">🔑 id (INTEGER PK)</li>
+              <li class="text-indigo-300 font-bold">orderNumber (TEXT UNIQUE)</li>
+              <li class="text-emerald-400 font-bold">🔗 customerId (FK -&gt; customers)</li>
+              <li class="text-amber-300">status ('Pending' / Slide 28)</li>
+              <li>subtotal, shippingCost, total</li>
+              <li>shippingMethod ('free' / 'express')</li>
+            </ul>
+            <div class="pt-2 border-t border-white/10 text-[11px] text-slate-400 flex justify-between">
+              <span>Contains Line Items</span>
+              <span class="font-bold text-blue-400">1 : N (One-to-Many)</span>
+            </div>
+          </div>
+
+          <!-- Card 3: ORDER_ITEMS -->
+          <div class="bg-[#080B11] border border-white/10 rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+              <span class="font-bold text-blue-400">ORDER_ITEMS</span>
+              <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">Bridge</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-1.5">
+              <li class="text-amber-400 font-bold">🔑 id (INTEGER PK)</li>
+              <li class="text-emerald-400 font-bold">🔗 orderId (FK -&gt; orders CASCADE)</li>
+              <li class="text-emerald-400 font-bold">🔗 productId (FK -&gt; products)</li>
+              <li>quantity (INTEGER)</li>
+              <li class="text-amber-300 font-bold">price (REAL Snapshot)</li>
+              <li>total (REAL)</li>
+            </ul>
+            <div class="pt-2 border-t border-white/10 text-[11px] text-slate-400 flex justify-between">
+              <span>References Products</span>
+              <span class="font-bold text-blue-400">N : 1 (Many-to-One)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Card 4: CATEGORIES -->
+          <div class="bg-[#080B11] border border-white/10 rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+              <span class="font-bold text-blue-400">CATEGORIES</span>
+              <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded">PK: id</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-1.5">
+              <li class="text-amber-400 font-bold">🔑 id (INTEGER PK)</li>
+              <li class="text-indigo-300 font-semibold">name (TEXT UNIQUE)</li>
+              <li class="text-indigo-300">slug (TEXT UNIQUE)</li>
+              <li>description (TEXT)</li>
+            </ul>
+            <div class="pt-2 border-t border-white/10 text-[11px] text-slate-400 flex justify-between">
+              <span>Categorizes Products</span>
+              <span class="font-bold text-blue-400">1 : N (One-to-Many)</span>
+            </div>
+          </div>
+
+          <!-- Card 5: PRODUCTS -->
+          <div class="bg-[#080B11] border border-white/10 rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+              <span class="font-bold text-blue-400">PRODUCTS</span>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">4 Seeded Items</span>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-1.5">
+              <li class="text-amber-400 font-bold">🔑 id (INTEGER PK)</li>
+              <li>name (Laptop, Mouse, Keyboard, Monitor)</li>
+              <li class="text-indigo-300">slug (TEXT UNIQUE)</li>
+              <li class="text-emerald-400 font-bold">🔗 categoryId (FK -&gt; categories)</li>
+              <li>price ($650, $15, $25, $120)</li>
+              <li>stock (INTEGER)</li>
+            </ul>
+            <div class="pt-2 border-t border-white/10 text-[11px] text-slate-400 flex justify-between">
+              <span>Included in Order Items</span>
+              <span class="font-bold text-blue-400">1 : N (One-to-Many)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- QUICK VIEW TELEMETRY MODAL                 -->
+  <!-- ========================================== -->
+  <div id="quick-view-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#080B11]/80 backdrop-blur-md">
+    <div class="relative bg-[#0E1420] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-white/10 space-y-6">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <span class="text-xs font-mono font-bold text-blue-400 uppercase tracking-wider">
+          HARDWARE TELEMETRY HUD // EXERCISE 1
+        </span>
+        <button onclick="closeQuickView()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+        <div class="relative aspect-4/3 w-full bg-[#080B11] rounded-2xl overflow-hidden border border-white/10">
+          <img id="modal-img" src="" alt="Product" class="w-full h-full object-cover">
+        </div>
+        <div class="space-y-4 font-mono">
+          <div>
+            <h3 id="modal-title" class="font-black text-2xl text-white font-sans">Laptop Workstation</h3>
+            <div class="flex items-center gap-2 mt-1 text-xs">
+              <span class="text-amber-400 font-bold">★ 4.9</span>
+              <span class="text-slate-500">• In Stock (50 Units)</span>
+            </div>
+          </div>
+          <div id="modal-price" class="text-3xl font-black text-white">$650.00</div>
+          <p id="modal-desc" class="text-xs text-slate-400 font-sans leading-relaxed">
+            High performance workstation equipped with 16GB RAM and 512GB NVMe SSD for development workloads.
+          </p>
+          <button onclick="addModalItemToCart()" class="btn-tactile w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-glow-blue flex items-center justify-center gap-2">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            <span>[ + LOAD INTO CART ]</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- FLOATING TOAST NOTIFICATION HUD            -->
+  <!-- ========================================== -->
+  <div id="toast-hud" class="hidden fixed bottom-6 right-6 z-50 bg-[#0E1420] text-white px-5 py-3 rounded-2xl shadow-2xl border border-blue-500/40 flex items-center gap-3">
+    <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+      <i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>
+    </div>
+    <div class="font-mono text-xs">
+      <span id="toast-title" class="font-bold text-white block">Item loaded to cart!</span>
+      <span class="text-[10px] text-slate-400">Cart synchronized instantly</span>
+    </div>
+    <button onclick="switchView('cart')" class="text-xs font-mono font-bold text-blue-400 hover:underline ml-2">
+      VIEW
+    </button>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- FOOTER                                     -->
+  <!-- ========================================== -->
+  <footer class="bg-[#05070B] border-t border-white/10 py-8 px-4 font-mono text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-slate-400">
+        <i data-lucide="cpu" class="w-4 h-4 text-blue-500"></i>
+        <span class="font-bold text-white">WEBYANSH.CORE // 2026 EDITION</span>
+        <span>• Practical Exercises 1, 2, 3 & 4</span>
+      </div>
+      <div>
+        <span>ARCHETYPE: <strong>CYBER-TACTILE INDUSTRIAL LUXE</strong></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- CLIENT LOGIC & REACTIVE STATE              -->
+  <!-- ========================================== -->
+  <script>
+    // 4 Products Catalog Database
+    const PRODUCTS = {
+      1: {
+        id: 1,
+        name: "High Performance Laptop",
+        price: 650.00,
+        category: "Computers",
+        stock: 50,
+        specs: "16GB RAM // 512GB SSD // IPS",
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&auto=format&fit=crop&q=80",
+        description: "Equipped with 16GB RAM, 512GB NVMe SSD, and 15.6-inch Full HD IPS Anti-glare display for high-performance computing."
+      },
+      2: {
+        id: 2,
+        name: "Wireless Optical Mouse",
+        price: 15.00,
+        category: "Accessories",
+        stock: 100,
+        specs: "16,000 DPI // 2.4GHz // Silent",
+        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80",
+        description: "16,000 DPI optical sensor, ultra-fast 2.4GHz wireless transmission, and silent tactile click switches."
+      },
+      3: {
+        id: 3,
+        name: "Tactile Mechanical Keyboard",
+        price: 25.00,
+        category: "Accessories",
+        stock: 80,
+        specs: "Blue Tactile // Hot-Swap // RGB",
+        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80",
+        description: "Full mechanical switches with audible tactile bump, hot-swappable sockets, and customizable RGB backlighting."
+      },
+      4: {
+        id: 4,
+        name: "27-inch 4K UHD Monitor",
+        price: 120.00,
+        category: "Displays",
+        stock: 35,
+        specs: "3840x2160 // 144Hz 1ms // HDR",
+        image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80",
+        description: "Crisp 3840x2160 resolution, 144Hz refresh rate with 1ms response time, and HDR400 color fidelity."
+      }
+    };
+
+    // Initial Cart State (Default: Laptop + Keyboard = $675.00)
+    let cart = [
+      { product: PRODUCTS[1], quantity: 1 },
+      { product: PRODUCTS[3], quantity: 1 }
+    ];
+
+    let appliedPromo = null;
+    let selectedShipping = 'free';
+    let currentQuickViewProduct = null;
+
+    // View Switching Logic
+    function switchView(viewName) {
+      const views = ['catalog', 'cart', 'checkout', 'confirmation', 'erd'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.classList.add('hidden');
+      });
+
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) {
+        target.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Update Nav Button States
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.classList.remove('bg-[#151D2C]', 'text-blue-400', 'border-blue-500/30', 'shadow-inner');
+        btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-white/5', 'border-transparent');
+      });
+
+      const activeBtn = document.getElementById(`nav-${viewName}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-white/5', 'border-transparent');
+        activeBtn.classList.add('bg-[#151D2C]', 'text-blue-400', 'border-blue-500/30', 'shadow-inner');
+      }
+
+      if (viewName === 'cart') renderCartTable();
+      if (viewName === 'confirmation') {
+        try {
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        } catch(e) {}
+      }
+    }
+
+    // Render Cart Items Table
+    function renderCartTable() {
+      const container = document.getElementById('cart-items-container');
+      if (!container) return;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="p-12 text-center space-y-4">
+            <i data-lucide="shopping-bag" class="w-12 h-12 text-slate-600 mx-auto"></i>
+            <h3 class="text-base font-mono font-bold text-white">Your Cart is Currently Empty</h3>
+            <p class="text-xs text-slate-400 font-sans">Browse the catalog to add products.</p>
+            <button onclick="switchView('catalog')" class="btn-tactile px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-mono text-xs font-bold shadow-glow-blue">
+              [ RETURN TO CATALOG ]
+            </button>
+          </div>
+        `;
+        lucide.createIcons();
+        updateTotals();
+        return;
+      }
+
+      container.innerHTML = cart.map((item, index) => {
+        const lineTotal = item.product.price * item.quantity;
+        return `
+          <div class="p-4 sm:p-5 flex flex-col sm:grid sm:grid-cols-12 sm:items-center gap-4 hover:bg-white/5 transition-colors font-mono">
+            <div class="sm:col-span-6 flex items-center gap-4">
+              <img src="${item.product.image}" alt="${item.product.name}" class="w-16 h-16 rounded-xl object-cover bg-slate-900 border border-white/10 shrink-0">
+              <div class="min-w-0">
+                <span class="text-[10px] text-blue-400 uppercase font-bold tracking-wider">${item.product.category}</span>
+                <h4 class="font-bold text-sm text-white truncate font-sans">${item.product.name}</h4>
+                <p class="text-[11px] text-slate-500 truncate">${item.product.specs}</p>
+                <button onclick="removeCartItem(${index})" class="sm:hidden text-xs text-rose-400 font-bold mt-1.5 flex items-center gap-1">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  <span>Remove</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="sm:col-span-2 text-left sm:text-center text-sm font-bold text-slate-300">
+              $${item.product.price.toFixed(2)}
+            </div>
+
+            <div class="sm:col-span-2 flex items-center justify-between sm:justify-center">
+              <div class="flex items-center border border-white/10 rounded-xl bg-[#080B11] overflow-hidden">
+                <button onclick="updateQty(${index}, -1)" class="p-1.5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors">
+                  <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                </button>
+                <span class="px-3 text-xs font-bold text-white">${item.quantity}</span>
+                <button onclick="updateQty(${index}, 1)" class="p-1.5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors">
+                  <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <button onclick="removeCartItem(${index})" class="hidden sm:block p-1.5 text-slate-500 hover:text-rose-400 ml-2">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <div class="sm:col-span-2 text-right text-base font-black text-white">
+              $${lineTotal.toFixed(2)}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+      updateTotals();
+    }
+
+    function updateQty(index, change) {
+      if (!cart[index]) return;
+      cart[index].quantity += change;
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
+      renderCartTable();
+    }
+
+    function removeCartItem(index) {
+      cart.splice(index, 1);
+      renderCartTable();
+    }
+
+    function clearCart() {
+      cart = [];
+      renderCartTable();
+    }
+
+    function addToCart(productId, btnEl) {
+      const prod = PRODUCTS[productId];
+      if (!prod) return;
+
+      const existing = cart.find(i => i.product.id === productId);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ product: prod, quantity: 1 });
+      }
+
+      updateTotals();
+
+      // Tactile button morphing into [✓ LOADED]
+      if (btnEl) {
+        const originalText = btnEl.innerText;
+        btnEl.innerText = "[ ✓ LOADED ]";
+        btnEl.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+        btnEl.classList.add('bg-emerald-500', 'text-slate-950', 'shadow-glow-emerald');
+
+        setTimeout(() => {
+          btnEl.innerText = originalText;
+          btnEl.classList.remove('bg-emerald-500', 'text-slate-950', 'shadow-glow-emerald');
+          btnEl.classList.add('bg-blue-600', 'hover:bg-blue-500');
+        }, 1500);
+      }
+
+      showToast(`Loaded ${prod.name} into Cart!`);
+    }
+
+    function updateTotals() {
+      const count = cart.reduce((acc, i) => acc + i.quantity, 0);
+      const subtotal = cart.reduce((acc, i) => acc + (i.product.price * i.quantity), 0);
+      const discount = appliedPromo === 'TECH10' ? subtotal * 0.1 : 0;
+      const shipping = selectedShipping === 'express' ? 9.00 : 0.00;
+      const grandTotal = Math.max(0, subtotal - discount + shipping);
+
+      // Nav Badge & Total
+      document.getElementById('nav-cart-badge').innerText = count;
+      document.getElementById('nav-cart-total').innerText = `$${subtotal.toFixed(2)}`;
+      document.getElementById('hero-cart-count').innerText = count;
+
+      const cartBadge = document.getElementById('cart-item-count-badge');
+      if (cartBadge) cartBadge.innerText = `${count} ${count === 1 ? 'ITEM' : 'ITEMS'} LOADED`;
+
+      // Free shipping meter ($50 threshold)
+      const freeBar = document.getElementById('free-shipping-bar');
+      const freePercent = document.getElementById('free-shipping-percent');
+      const freeText = document.getElementById('free-shipping-text');
+
+      const pct = Math.min(100, Math.round((subtotal / 50) * 100));
+      if (freeBar) freeBar.style.width = `${pct}%`;
+      if (freePercent) freePercent.innerText = `${pct}%`;
+
+      if (freeText) {
+        if (subtotal >= 50) {
+          freeText.className = "text-emerald-400 font-bold";
+          freeText.innerText = "🎉 [ ✓ FREE STANDARD DISPATCH UNLOCKED ON ORDERS > $50 ]";
+        } else {
+          freeText.className = "text-slate-300 font-bold";
+          freeText.innerText = `ADD $${(50 - subtotal).toFixed(2)} MORE TO UNLOCK FREE STANDARD DELIVERY`;
+        }
+      }
+
+      // Summary
+      const summarySub = document.getElementById('summary-subtotal');
+      if (summarySub) summarySub.innerText = `$${subtotal.toFixed(2)}`;
+
+      const discRow = document.getElementById('summary-discount-row');
+      const discVal = document.getElementById('summary-discount');
+      if (discRow && discVal) {
+        if (appliedPromo) {
+          discRow.classList.remove('hidden');
+          discVal.innerText = `-$${discount.toFixed(2)}`;
+        } else {
+          discRow.classList.add('hidden');
+        }
+      }
+
+      const summaryGrand = document.getElementById('summary-grandtotal');
+      if (summaryGrand) summaryGrand.innerText = `$${grandTotal.toFixed(2)}`;
+
+      const chkGrand = document.getElementById('chk-grand-total');
+      if (chkGrand) chkGrand.innerText = `$${grandTotal.toFixed(2)}`;
+    }
+
+    function applyPromo() {
+      const code = document.getElementById('promo-input').value.trim().toUpperCase();
+      const statusEl = document.getElementById('promo-status');
+      if (code === 'TECH10') {
+        appliedPromo = 'TECH10';
+        statusEl.classList.remove('hidden');
+        statusEl.className = "text-[11px] font-mono text-emerald-400";
+        statusEl.innerText = "[ ✓ PROMO 'TECH10' APPLIED: -10% OFF ]";
+      } else {
+        appliedPromo = null;
+        statusEl.classList.remove('hidden');
+        statusEl.className = "text-[11px] font-mono text-rose-400";
+        statusEl.innerText = "[ ! INVALID CODE. USE 'TECH10' ]";
+      }
+      updateTotals();
+    }
+
+    function selectShipping(type) {
+      selectedShipping = type;
+      const freeLabel = document.getElementById('shipping-label-free');
+      const expLabel = document.getElementById('shipping-label-express');
+      const costLabel = document.getElementById('chk-shipping-cost-label');
+
+      if (type === 'free') {
+        freeLabel.className = "flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all bg-[#151D2C] border-blue-500 shadow-glow-blue";
+        expLabel.className = "flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all bg-[#080B11] border-white/10 hover:border-white/20";
+        document.getElementById('radio-free').checked = true;
+        costLabel.innerText = "FREE ($0.00)";
+      } else {
+        expLabel.className = "flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all bg-[#151D2C] border-blue-500 shadow-glow-blue";
+        freeLabel.className = "flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all bg-[#080B11] border-white/10 hover:border-white/20";
+        document.getElementById('radio-express').checked = true;
+        costLabel.innerText = "$9.00 (Express Courier)";
+      }
+      updateTotals();
+    }
+
+    function autoFillDemoStudent() {
+      document.getElementById('chk-firstName').value = "Sokha";
+      document.getElementById('chk-lastName').value = "Chan";
+      document.getElementById('chk-email').value = "sokha.chan@example.com";
+      document.getElementById('chk-phone').value = "+855 12 345 678";
+      document.getElementById('chk-address').value = "#123, St. 2004, Sangkat Teuk Thla";
+      document.getElementById('chk-city').value = "Phnom Penh";
+      document.getElementById('chk-state').value = "Phnom Penh";
+      document.getElementById('chk-zipCode').value = "12000";
+
+      showToast("✨ Auto-Filled Student Demo Data for Grading!");
+    }
+
+    function submitOrder() {
+      const firstName = document.getElementById('chk-firstName').value.trim() || "Sokha";
+      const lastName = document.getElementById('chk-lastName').value.trim() || "Chan";
+
+      document.getElementById('conf-customer-name').innerText = `${firstName} ${lastName}`;
+      document.getElementById('conf-order-id').innerText = "ORD-" + Math.floor(1000 + Math.random() * 9000);
+
+      switchView('confirmation');
+    }
+
+    function copyOrderId() {
+      const id = document.getElementById('conf-order-id').innerText;
+      navigator.clipboard.writeText(id);
+      showToast(`Copied ${id} to clipboard!`);
+    }
+
+    function openQuickView(id) {
+      const prod = PRODUCTS[id];
+      if (!prod) return;
+      currentQuickViewProduct = prod;
+
+      document.getElementById('modal-img').src = prod.image;
+      document.getElementById('modal-title').innerText = prod.name;
+      document.getElementById('modal-price').innerText = `$${prod.price.toFixed(2)}`;
+      document.getElementById('modal-desc').innerText = prod.description;
+
+      document.getElementById('quick-view-modal').classList.remove('hidden');
+    }
+
+    function closeQuickView() {
+      document.getElementById('quick-view-modal').classList.add('hidden');
+    }
+
+    function addModalItemToCart() {
+      if (currentQuickViewProduct) {
+        addToCart(currentQuickViewProduct.id);
+        closeQuickView();
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-hud');
+      document.getElementById('toast-title').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2500);
+    }
+
+    // Initialize Icons and render on DOM ready
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateTotals();
+    });
+  </script>
+</body>
+</html>

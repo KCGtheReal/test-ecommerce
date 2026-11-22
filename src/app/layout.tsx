@@ -5,9 +5,9 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Webyansh Tech Store | លំហាត់អនុវត្ត E-Commerce & Database System",
+  title: "Webyansh Core | Cyber-Tactile Industrial Hardware Store (លំហាត់អនុវត្ត)",
   description:
-    "E-commerce storefront and relational database system implementing Practical Exercises 1, 2, 3 & 4 from លំហាត់អនុវត្ត.pdf.",
+    "Precision-engineered hardware store and relational database system implementing Practical Exercises 1, 2, 3 & 4 from លំហាត់អនុវត្ត.pdf.",
 };
 
 export default function RootLayout({
@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased bg-slate-50 text-slate-900 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+    <html lang="en" className="dark">
+      <body className="antialiased bg-[#080B11] text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white bg-dot-grid">
         <CartProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

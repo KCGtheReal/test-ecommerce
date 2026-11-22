@@ -14,15 +14,14 @@ import {
   Package,
   CheckCircle2,
   Sparkles,
-  Zap,
   Check,
 } from "lucide-react";
 import { useCart } from "@/context/cart-context";
-import { ShippingOption, CheckoutFormValues } from "@/types";
+import { CheckoutFormValues } from "@/types";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, subtotal, clearCart, itemCount } = useCart();
+  const { items, subtotal, clearCart } = useCart();
 
   // Form State
   const [formData, setFormData] = useState<CheckoutFormValues>({
@@ -88,7 +87,7 @@ export default function CheckoutPage() {
     }
   };
 
-  // Quick Demo Auto-Fill (Task F-4 specification for easy evaluation)
+  // Quick Demo Auto-Fill
   const handleAutoFillDemo = () => {
     const demoData: CheckoutFormValues = {
       firstName: "Sokha",
@@ -188,38 +187,41 @@ export default function CheckoutPage() {
 
   if (items.length === 0 && !loading) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-20 text-center space-y-4">
-        <h1 className="text-2xl font-bold text-slate-900">Your cart is empty</h1>
-        <p className="text-xs sm:text-sm text-slate-500">
-          Please add products to your cart before proceeding to checkout.
+      <div className="max-w-3xl mx-auto px-4 py-20 text-center space-y-4 font-mono">
+        <div className="w-16 h-16 bg-[#0E1420] text-blue-400 border border-white/10 rounded-2xl flex items-center justify-center mx-auto shadow-chamfer">
+          <Package className="w-8 h-8" />
+        </div>
+        <h1 className="text-2xl font-black text-white font-sans">Dispatch Queue is Empty</h1>
+        <p className="text-xs sm:text-sm text-slate-400 max-w-md mx-auto font-sans">
+          Please add hardware components to your cart before proceeding to the checkout terminal.
         </p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-slate-900 text-white font-bold text-xs"
+          className="btn-tactile inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-glow-blue"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Browse Products</span>
+          <span>[ RETURN TO CATALOG ]</span>
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Breadcrumb Header matching Page 3 of PDF */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-mono">
+      {/* Breadcrumb Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-400 mb-1">
-            <Link href="/cart" className="hover:text-blue-600 transition-colors">
-              Cart
+          <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
+            <Link href="/cart" className="hover:text-blue-400 transition-colors">
+              01. CART
             </Link>
             <span>/</span>
-            <span className="text-blue-600">Customer & Shipping Address (Exercise 2)</span>
+            <span className="text-blue-400 font-bold">02. DISPATCH DESTINATION (EXERCISE 2)</span>
             <span>/</span>
-            <span className="text-slate-400">Confirmation (Slide 28)</span>
+            <span className="text-slate-600">03. SLIDE 28 RECEIPT</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Checkout & Delivery Address
+          <h1 className="text-3xl font-black text-white tracking-tight font-sans">
+            Checkout Terminal & Address
           </h1>
         </div>
 
@@ -227,42 +229,42 @@ export default function CheckoutPage() {
         <button
           onClick={handleAutoFillDemo}
           type="button"
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs border border-blue-200 transition-colors shadow-2xs self-start sm:self-auto"
+          className="btn-tactile px-4 py-2.5 rounded-xl bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/40 text-xs font-bold flex items-center gap-2 shadow-sm self-start sm:self-auto"
         >
-          <Sparkles className="w-4 h-4 text-blue-600" />
+          <Sparkles className="w-4 h-4 text-blue-400" />
           <span>✨ Auto-Fill Demo Student Data</span>
         </button>
       </div>
 
       {apiError && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3 text-red-800 text-xs sm:text-sm animate-in fade-in">
-          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-          <div>
-            <span className="font-bold block">Order Error</span>
-            <span className="text-xs text-red-700">{apiError}</span>
-          </div>
+        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center gap-3 text-xs">
+          <AlertCircle className="w-5 h-5 shrink-0" />
+          <span>{apiError}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Customer Form & Shipping Cards (Col 7) */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Section 1: Customer Contact & Shipping Details Card */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5">
-            <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2.5 pb-3 border-b border-slate-100">
-              <span className="w-6 h-6 rounded-full bg-slate-900 text-white text-xs flex items-center justify-center font-black">
-                1
-              </span>
-              <span>Customer Shipping Address</span>
-            </h2>
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Form Fields & Shipping Radio Cards (Col 7) */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Customer Address Card */}
+            <div className="bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer p-6 sm:p-7 space-y-5">
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2.5 pb-3 border-b border-white/10">
+                <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-black">
+                  1
+                </span>
+                <span>Customer Details & Shipping Address (Exercise 2)</span>
+              </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              {/* First Name */}
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  First Name <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                {/* First Name */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-bold">First Name *</label>
+                    {touched.firstName && !formErrors.firstName && formData.firstName && (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    )}
+                  </div>
                   <input
                     type="text"
                     name="firstName"
@@ -270,29 +272,27 @@ export default function CheckoutPage() {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     placeholder="Sokha"
-                    className={`w-full px-3.5 py-2.5 rounded-xl border ${
-                      formErrors.firstName
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.firstName
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                      touched.firstName && formErrors.firstName
+                        ? "border-rose-500 focus:border-rose-500"
+                        : "border-white/10 focus:border-blue-500"
+                    }`}
                   />
-                  {touched.firstName && !formErrors.firstName && (
-                    <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600" />
+                  {touched.firstName && formErrors.firstName && (
+                    <span className="text-[11px] text-rose-400 mt-1 block">
+                      {formErrors.firstName}
+                    </span>
                   )}
                 </div>
-                {formErrors.firstName && (
-                  <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.firstName}</p>
-                )}
-              </div>
 
-              {/* Last Name */}
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Last Name <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
+                {/* Last Name */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-bold">Last Name *</label>
+                    {touched.lastName && !formErrors.lastName && formData.lastName && (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    )}
+                  </div>
                   <input
                     type="text"
                     name="lastName"
@@ -300,29 +300,27 @@ export default function CheckoutPage() {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     placeholder="Chan"
-                    className={`w-full px-3.5 py-2.5 rounded-xl border ${
-                      formErrors.lastName
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.lastName
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                      touched.lastName && formErrors.lastName
+                        ? "border-rose-500 focus:border-rose-500"
+                        : "border-white/10 focus:border-blue-500"
+                    }`}
                   />
-                  {touched.lastName && !formErrors.lastName && (
-                    <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600" />
+                  {touched.lastName && formErrors.lastName && (
+                    <span className="text-[11px] text-rose-400 mt-1 block">
+                      {formErrors.lastName}
+                    </span>
                   )}
                 </div>
-                {formErrors.lastName && (
-                  <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.lastName}</p>
-                )}
-              </div>
 
-              {/* Email */}
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Email Address <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
+                {/* Email Address */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-bold">Email Address *</label>
+                    {touched.email && !formErrors.email && formData.email && (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    )}
+                  </div>
                   <input
                     type="email"
                     name="email"
@@ -330,29 +328,27 @@ export default function CheckoutPage() {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     placeholder="sokha.chan@example.com"
-                    className={`w-full px-3.5 py-2.5 rounded-xl border ${
-                      formErrors.email
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.email
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                      touched.email && formErrors.email
+                        ? "border-rose-500 focus:border-rose-500"
+                        : "border-white/10 focus:border-blue-500"
+                    }`}
                   />
-                  {touched.email && !formErrors.email && (
-                    <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600" />
+                  {touched.email && formErrors.email && (
+                    <span className="text-[11px] text-rose-400 mt-1 block">
+                      {formErrors.email}
+                    </span>
                   )}
                 </div>
-                {formErrors.email && (
-                  <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.email}</p>
-                )}
-              </div>
 
-              {/* Phone */}
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  Phone Number <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
+                {/* Phone Number */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-bold">Phone Number *</label>
+                    {touched.phone && !formErrors.phone && formData.phone && (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    )}
+                  </div>
                   <input
                     type="tel"
                     name="phone"
@@ -360,29 +356,27 @@ export default function CheckoutPage() {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     placeholder="+855 12 345 678"
-                    className={`w-full px-3.5 py-2.5 rounded-xl border ${
-                      formErrors.phone
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.phone
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                      touched.phone && formErrors.phone
+                        ? "border-rose-500 focus:border-rose-500"
+                        : "border-white/10 focus:border-blue-500"
+                    }`}
                   />
-                  {touched.phone && !formErrors.phone && (
-                    <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600" />
+                  {touched.phone && formErrors.phone && (
+                    <span className="text-[11px] text-rose-400 mt-1 block">
+                      {formErrors.phone}
+                    </span>
                   )}
                 </div>
-                {formErrors.phone && (
-                  <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.phone}</p>
-                )}
-              </div>
 
-              {/* Address */}
-              <div className="sm:col-span-2">
-                <label className="block font-bold text-slate-700 mb-1">
-                  Street Address <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
+                {/* Street Address */}
+                <div className="sm:col-span-2">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-bold">Street Address *</label>
+                    {touched.address && !formErrors.address && formData.address && (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    )}
+                  </div>
                   <input
                     type="text"
                     name="address"
@@ -390,29 +384,27 @@ export default function CheckoutPage() {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     placeholder="#123, St. 2004, Sangkat Teuk Thla"
-                    className={`w-full px-3.5 py-2.5 rounded-xl border ${
-                      formErrors.address
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.address
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                      touched.address && formErrors.address
+                        ? "border-rose-500 focus:border-rose-500"
+                        : "border-white/10 focus:border-blue-500"
+                    }`}
                   />
-                  {touched.address && !formErrors.address && (
-                    <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600" />
+                  {touched.address && formErrors.address && (
+                    <span className="text-[11px] text-rose-400 mt-1 block">
+                      {formErrors.address}
+                    </span>
                   )}
                 </div>
-                {formErrors.address && (
-                  <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.address}</p>
-                )}
-              </div>
 
-              {/* City */}
-              <div>
-                <label className="block font-bold text-slate-700 mb-1">
-                  City <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
+                {/* City */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-bold">City *</label>
+                    {touched.city && !formErrors.city && formData.city && (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    )}
+                  </div>
                   <input
                     type="text"
                     name="city"
@@ -420,246 +412,244 @@ export default function CheckoutPage() {
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     placeholder="Phnom Penh"
-                    className={`w-full px-3.5 py-2.5 rounded-xl border ${
-                      formErrors.city
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.city
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
+                    className={`w-full px-3.5 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                      touched.city && formErrors.city
+                        ? "border-rose-500 focus:border-rose-500"
+                        : "border-white/10 focus:border-blue-500"
+                    }`}
                   />
-                  {touched.city && !formErrors.city && (
-                    <Check className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-600" />
-                  )}
-                </div>
-                {formErrors.city && (
-                  <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.city}</p>
-                )}
-              </div>
-
-              {/* State & Zip Code */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    State / Prov <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    placeholder="Phnom Penh"
-                    className={`w-full px-3 py-2.5 rounded-xl border ${
-                      formErrors.state
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.state
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
-                  />
-                  {formErrors.state && (
-                    <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.state}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">
-                    Zip Code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="zipCode"
-                    value={formData.zipCode}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    placeholder="12000"
-                    className={`w-full px-3 py-2.5 rounded-xl border ${
-                      formErrors.zipCode
-                        ? "border-rose-400 bg-rose-50/20"
-                        : touched.zipCode
-                        ? "border-emerald-500 bg-emerald-50/10"
-                        : "border-slate-200"
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/30 text-slate-900`}
-                  />
-                  {formErrors.zipCode && (
-                    <p className="text-[11px] text-rose-500 font-semibold mt-1">{formErrors.zipCode}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Section 2: Shipping Method Radio Cards (Exercise 2) */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-4">
-            <h2 className="text-base font-extrabold text-slate-900 flex items-center gap-2.5 pb-3 border-b border-slate-100">
-              <span className="w-6 h-6 rounded-full bg-slate-900 text-white text-xs flex items-center justify-center font-black">
-                2
-              </span>
-              <span>Shipping Method Selection</span>
-            </h2>
-
-            <div className="space-y-3">
-              {/* Free Shipping Option Card */}
-              <label
-                className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
-                  formData.shippingMethod === "free"
-                    ? "border-slate-900 bg-slate-50/80 shadow-xs"
-                    : "border-slate-200 hover:border-slate-300 bg-white"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <input
-                    type="radio"
-                    name="shippingMethod"
-                    value="free"
-                    checked={formData.shippingMethod === "free"}
-                    onChange={(e) =>
-                      setFormData((prev) => ({ ...prev, shippingMethod: "free" }))
-                    }
-                    className="w-4 h-4 text-slate-900 focus:ring-slate-900"
-                  />
-                  <div>
-                    <span className="font-extrabold text-sm text-slate-900 block">
-                      Free Shipping ($0.00)
+                  {touched.city && formErrors.city && (
+                    <span className="text-[11px] text-rose-400 mt-1 block">
+                      {formErrors.city}
                     </span>
-                    <span className="text-xs text-slate-500">
-                      Standard delivery (7 - 20 Business Days)
-                    </span>
-                  </div>
+                  )}
                 </div>
-                <span className="font-black text-sm text-emerald-600 font-mono">FREE</span>
-              </label>
 
-              {/* Express Shipping Option Card */}
-              <label
-                className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
-                  formData.shippingMethod === "express"
-                    ? "border-slate-900 bg-slate-50/80 shadow-xs"
-                    : "border-slate-200 hover:border-slate-300 bg-white"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <input
-                    type="radio"
-                    name="shippingMethod"
-                    value="express"
-                    checked={formData.shippingMethod === "express"}
-                    onChange={(e) =>
-                      setFormData((prev) => ({ ...prev, shippingMethod: "express" }))
-                    }
-                    className="w-4 h-4 text-slate-900 focus:ring-slate-900"
-                  />
+                {/* State & Zip */}
+                <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-sm text-slate-900">
-                        Express Shipping ($9.00)
-                      </span>
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-100 text-amber-800">
-                        Fastest Delivery
-                      </span>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-slate-300 font-bold">State / Prov *</label>
+                      {touched.state && !formErrors.state && formData.state && (
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      )}
                     </div>
-                    <span className="text-xs text-slate-500">
-                      Priority express courier (1 - 3 Business Days)
-                    </span>
-                  </div>
-                </div>
-                <span className="font-black text-sm text-slate-900 font-mono">$9.00</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Sticky Order Summary & Submit (Col 5) */}
-        <div className="lg:col-span-5 bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-6 sticky top-24">
-          <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-slate-900">Order Summary</h2>
-            <span className="text-xs font-bold text-slate-500">
-              {itemCount} {itemCount === 1 ? "item" : "items"}
-            </span>
-          </div>
-
-          {/* Mini Items Thumbnail List */}
-          <div className="divide-y divide-slate-100 max-h-56 overflow-y-auto pr-1">
-            {items.map((item) => (
-              <div key={item.product.id} className="py-2.5 flex items-center gap-3 text-xs">
-                <div className="relative w-12 h-12 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200/60 shadow-2xs">
-                  {item.product.imageUrl ? (
-                    <Image
-                      src={item.product.imageUrl}
-                      alt={item.product.name}
-                      fill
-                      sizes="48px"
-                      className="object-cover"
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      placeholder="Phnom Penh"
+                      className={`w-full px-3 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                        touched.state && formErrors.state
+                          ? "border-rose-500 focus:border-rose-500"
+                          : "border-white/10 focus:border-blue-500"
+                      }`}
                     />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-400">
-                      <Package className="w-5 h-5" />
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-slate-300 font-bold">Zip Code *</label>
+                      {touched.zipCode && !formErrors.zipCode && formData.zipCode && (
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      )}
                     </div>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-slate-900 truncate">{item.product.name}</h4>
-                  <p className="text-slate-400 text-[11px]">
-                    Qty: {item.quantity} × ${item.product.price.toFixed(2)}
-                  </p>
-                </div>
-                <div className="text-right font-black text-slate-900 font-mono">
-                  ${(item.product.price * item.quantity).toFixed(2)}
+                    <input
+                      type="text"
+                      name="zipCode"
+                      value={formData.zipCode}
+                      onChange={handleInputChange}
+                      onBlur={handleBlur}
+                      placeholder="12000"
+                      className={`w-full px-3 py-2.5 rounded-xl bg-[#080B11] border text-white focus:outline-none transition-colors ${
+                        touched.zipCode && formErrors.zipCode
+                          ? "border-rose-500 focus:border-rose-500"
+                          : "border-white/10 focus:border-blue-500"
+                      }`}
+                    />
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Price Summary Breakdown */}
-          <div className="pt-4 border-t border-slate-100 space-y-2.5 text-xs">
-            <div className="flex items-center justify-between text-slate-600">
-              <span>Items Subtotal</span>
-              <span className="font-bold text-slate-900 font-mono">${subtotal.toFixed(2)}</span>
             </div>
 
-            <div className="flex items-center justify-between text-slate-600">
-              <span>Shipping Method</span>
-              <span className="font-bold text-slate-900">
-                {shippingCost === 0 ? "FREE ($0.00)" : "$9.00 (Express)"}
+            {/* Section 2: Shipping Method Selection */}
+            <div className="bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer p-6 sm:p-7 space-y-4">
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2.5 pb-3 border-b border-white/10">
+                <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-black">
+                  2
+                </span>
+                <span>Shipping Method (Practical Exercise 2)</span>
+              </h2>
+
+              <div className="space-y-3">
+                {/* Free Shipping Radio */}
+                <label
+                  onClick={() => setFormData((prev) => ({ ...prev, shippingMethod: "free" }))}
+                  className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                    formData.shippingMethod === "free"
+                      ? "bg-[#151D2C] border-blue-500 shadow-glow-blue"
+                      : "bg-[#080B11] border-white/10 hover:border-white/20"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="shippingMethod"
+                      value="free"
+                      checked={formData.shippingMethod === "free"}
+                      onChange={() => setFormData((prev) => ({ ...prev, shippingMethod: "free" }))}
+                      className="text-blue-600 focus:ring-0"
+                    />
+                    <div>
+                      <span className="font-bold text-sm text-white block">
+                        Free Standard Shipping ($0.00)
+                      </span>
+                      <span className="text-xs text-slate-400">
+                        7 - 20 Business Days Delivery
+                      </span>
+                    </div>
+                  </div>
+                  <span className="font-black text-emerald-400 text-sm">FREE</span>
+                </label>
+
+                {/* Express Shipping Radio */}
+                <label
+                  onClick={() => setFormData((prev) => ({ ...prev, shippingMethod: "express" }))}
+                  className={`flex items-center justify-between p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                    formData.shippingMethod === "express"
+                      ? "bg-[#151D2C] border-blue-500 shadow-glow-blue"
+                      : "bg-[#080B11] border-white/10 hover:border-white/20"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      name="shippingMethod"
+                      value="express"
+                      checked={formData.shippingMethod === "express"}
+                      onChange={() =>
+                        setFormData((prev) => ({ ...prev, shippingMethod: "express" }))
+                      }
+                      className="text-blue-600 focus:ring-0"
+                    />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-sm text-white">
+                          Priority Hyper-Courier ($9.00)
+                        </span>
+                        <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 text-[10px] font-black">
+                          EXPEDITED
+                        </span>
+                      </div>
+                      <span className="text-xs text-slate-400">
+                        1 - 3 Business Days with Direct Hand-off
+                      </span>
+                    </div>
+                  </div>
+                  <span className="font-black text-white text-sm">$9.00</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Sticky Checkout Summary & Submit (Col 5) */}
+          <div className="lg:col-span-5 bg-[#0E1420] rounded-3xl border border-white/10 shadow-chamfer p-6 sm:p-7 space-y-6 sticky top-24">
+            <div className="pb-3 border-b border-white/10 flex items-center justify-between">
+              <h2 className="text-base font-black text-white uppercase">Order Review</h2>
+              <span className="text-xs font-bold text-blue-400">
+                {items.length} {items.length === 1 ? "ITEM" : "ITEMS"}
               </span>
             </div>
 
-            <div className="flex items-center justify-between text-slate-600">
-              <span>Estimated Sales Tax</span>
-              <span className="font-semibold text-slate-900 font-mono">$0.00</span>
+            {/* Items Mini List */}
+            <div className="divide-y divide-white/5 space-y-2 text-xs">
+              {items.map((item) => (
+                <div key={item.product.id} className="flex items-center justify-between py-2 gap-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-9 h-9 rounded-lg bg-[#080B11] border border-white/10 overflow-hidden relative shrink-0">
+                      {item.product.imageUrl && (
+                        <Image
+                          src={item.product.imageUrl}
+                          alt={item.product.name}
+                          fill
+                          className="object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="truncate">
+                      <span className="text-white font-bold block truncate font-sans">
+                        {item.product.name}
+                      </span>
+                      <span className="text-slate-500 text-[11px]">
+                        QTY: {item.quantity} × ${item.product.price.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-white font-bold shrink-0">
+                    ${(item.product.price * item.quantity).toFixed(2)}
+                  </span>
+                </div>
+              ))}
             </div>
 
-            <div className="pt-3 border-t border-slate-100 flex items-baseline justify-between text-sm">
-              <span className="font-extrabold text-slate-900 text-base">Grand Total</span>
-              <span className="text-2xl font-black text-slate-900 font-mono">
-                ${grandTotal.toFixed(2)}
-              </span>
+            {/* Price Calculation */}
+            <div className="pt-4 border-t border-white/10 space-y-2 text-xs">
+              <div className="flex justify-between text-slate-400">
+                <span>ITEMS SUBTOTAL:</span>
+                <span className="text-white font-bold">${subtotal.toFixed(2)}</span>
+              </div>
+
+              <div className="flex justify-between text-slate-400">
+                <span>SHIPPING METHOD:</span>
+                <span
+                  className={
+                    formData.shippingMethod === "express"
+                      ? "text-white font-bold"
+                      : "text-emerald-400 font-bold"
+                  }
+                >
+                  {formData.shippingMethod === "express" ? "$9.00 (Express)" : "FREE ($0.00)"}
+                </span>
+              </div>
+
+              <div className="flex justify-between text-slate-400">
+                <span>ESTIMATED TAX:</span>
+                <span className="text-white font-bold">$0.00</span>
+              </div>
+
+              <div className="pt-3 border-t border-white/10 flex justify-between items-baseline">
+                <span className="text-base font-black text-white font-sans">GRAND TOTAL:</span>
+                <span className="text-2xl font-black text-white">
+                  ${grandTotal.toFixed(2)}
+                </span>
+              </div>
             </div>
-          </div>
 
-          {/* Place Order CTA Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-slate-900 hover:bg-black active:scale-[0.99] text-white font-black text-sm shadow-xl shadow-slate-900/20 transition-all disabled:opacity-60"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
-                <span>Processing Order in Database...</span>
-              </>
-            ) : (
-              <>
-                <span>Place Order</span>
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
+            {/* Place Order Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-tactile w-full py-4 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-black text-sm shadow-glow-blue flex items-center justify-center gap-2 tracking-wide"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>TRANSMITTING ORDER MANIFEST...</span>
+                </>
+              ) : (
+                <>
+                  <span>PLACE ORDER NOW</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
 
-          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 pt-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Fulfills Practical Exercise 2 Specifications</span>
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-500">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>Fulfilled by Practical Exercise 2 Flow</span>
+            </div>
           </div>
         </div>
       </form>
