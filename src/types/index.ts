@@ -40,6 +40,8 @@ export interface OrderItem {
   price: number;
   quantity: number;
   total: number;
+  product?: Product;
+  createdAt?: string | Date;
 }
 
 export interface Order {
