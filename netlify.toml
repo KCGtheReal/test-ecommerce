@@ -1,0 +1,14 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  DATABASE_URL = "file:./dev.db"
+  NODE_VERSION = "20"
+  NEXT_PUBLIC_APP_URL = "https://kcg-ecommerce-exercises.netlify.app"
+  NEXT_PUBLIC_DEFAULT_CURRENCY = "USD"
+  NEXT_PUBLIC_KHR_RATE = "4100"
+  BAKONG_MOCK = "true"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
